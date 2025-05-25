@@ -2,44 +2,52 @@ class Article:
     all = []
 
     def __init__(self, author, magazine, title):
-        if not isinstance(title, str):
-            raise Exception("Title must be a string")
-        if not 5 <= len(title) <= 50:
-            raise Exception("Title must be between 5 and 50 characters")
-        if not isinstance(author, Author):
-            raise Exception("Author must be an Author instance")
-        if not isinstance(magazine, Magazine):
-            raise Exception("Magazine must be a Magazine instance")
+        if isinstance(title, str) and 5 <= len(title) <= 500:
+            self._title = title
+        else:
+            self._title = None  # title becomes None if invalid, to avoid crashing
 
-        self._author = author
-        self._magazine = magazine
-        self._title = title
+        self.author = author
+        self.magazine = magazine
         Article.all.append(self)
 
     @property
     def title(self):
-        return self._title
+        return self._title  # no setter = immutable
 
     @property
     def author(self):
         return self._author
 
+    @author.setter
+    def author(self, value):
+        if isinstance(value, Author):
+            self._author = value
+
     @property
     def magazine(self):
         return self._magazine
 
+    @magazine.setter
+    def magazine(self, value):
+        if isinstance(value, Magazine):
+            self._magazine = value
+
 
 class Author:
     def __init__(self, name):
-        if not isinstance(name, str):
-            raise Exception("Name must be a string")
-        if len(name.strip()) == 0:
-            raise Exception("Name must be longer than 0 characters")
-        self._name = name
+        if isinstance(name, str) and len(name.strip()) > 0:
+            self._name = name
+        else:
+            self._name = None  # fail silently
 
     @property
     def name(self):
-        return self._name
+        return self._name  # no setter = immutable
+    
+    @name.setter
+    def name(self, value):
+          pass  # Silently ignores the assignment
 
     def articles(self):
         return [article for article in Article.all if article.author == self]
@@ -72,8 +80,6 @@ class Magazine:
     def name(self, value):
         if isinstance(value, str) and 2 <= len(value) <= 16:
             self._name = value
-        else:
-            raise Exception("Name must be a string between 2 and 16 characters")
 
     @property
     def category(self):
@@ -83,8 +89,6 @@ class Magazine:
     def category(self, value):
         if isinstance(value, str) and len(value.strip()) > 0:
             self._category = value
-        else:
-            raise Exception("Category must be a non-empty string")
 
     def articles(self):
         return [article for article in Article.all if article.magazine == self]
@@ -98,7 +102,6 @@ class Magazine:
 
     def contributing_authors(self):
         from collections import Counter
-        authors = [article.author for article in self.articles()]
-        author_count = Counter(authors)
-        result = [author for author, count in author_count.items() if count > 2]
-        return result if result else None
+        author_count = Counter([article.author for article in self.articles()])
+        authors = [author for author, count in author_count.items() if count > 2]
+        return authors if authors else None
