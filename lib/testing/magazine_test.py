@@ -203,16 +203,16 @@ class TestMagazine:
         assert all(isinstance(author, Author) for author in magazine_1.contributing_authors())
         assert magazine_2.contributing_authors() is None
 
-    # def test_top_publisher(self):
-    #     """returns the magazine with the most articles"""
-    #     Magazine.all = []
-    #     Article.all = []
-    #     assert Magazine.top_publisher() == None
+    def test_top_publisher(self):
+        """returns the magazine with the most articles"""
+        Magazine.all = []
+        Article.all = []
+        assert Magazine.top_publisher() == None
 
-    #     author_1 = Author("Carry Bradshaw")
-    #     magazine_1 = Magazine("Vogue", "Fashion")
-    #     magazine_2 = Magazine("AD", "Architecture")
-    #     assert Magazine.top_publisher() == None
+        author_1 = Author("Carry Bradshaw")
+        magazine_1 = Magazine("Vogue", "Fashion")
+        magazine_2 = Magazine("AD", "Architecture")
+        assert Magazine.top_publisher() == None
 
     #     Article(author_1, magazine_1, "How to wear a tutu with style")
     #     Article(author_1, magazine_1, "Dating life in NYC")

@@ -2,10 +2,10 @@ class Article:
     all = []
 
     def __init__(self, author, magazine, title):
-        if isinstance(title, str) and 5 <= len(title) <= 500:
-            self._title = title
-        else:
-            self._title = None  # title becomes None if invalid, to avoid crashing
+        if not isinstance(title, str) and 5 <= len(title) <= 50:
+             raise Exception("Title must be a string between 5 and 50 characters.")
+        self._title = title
+        
 
         self.author = author
         self.magazine = magazine
@@ -36,18 +36,17 @@ class Article:
 
 class Author:
     def __init__(self, name):
-        if isinstance(name, str) and len(name.strip()) > 0:
-            self._name = name
-        else:
-            self._name = None  # fail silently
-
+        if not isinstance(name, str) and len(name.strip()) > 0:
+            raise Exception("author must be an instance of Author")
+        self._name = name
+       
     @property
     def name(self):
         return self._name  # no setter = immutable
     
     @name.setter
     def name(self, value):
-          pass  # Silently ignores the assignment
+         pass  # Silently ignores the assignment
 
     def articles(self):
         return [article for article in Article.all if article.author == self]
@@ -105,3 +104,8 @@ class Magazine:
         author_count = Counter([article.author for article in self.articles()])
         authors = [author for author, count in author_count.items() if count > 2]
         return authors if authors else None
+    @classmethod
+    def top_publisher(cls):
+        if not cls.all or not Article.all:
+            return None
+        return max(cls.all, key=lambda mag: len(mag.articles()), default=None)
