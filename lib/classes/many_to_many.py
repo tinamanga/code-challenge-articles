@@ -16,6 +16,18 @@ class Article:
         self.author = author
         self.magazine = magazine
         self.title = title
+
+    @property
+    def title(self):
+        return self._title
+
+    @property
+    def author(self):
+        return self._author
+
+    @property
+    def magazine(self):
+        return self._magazine
         
 class Author:
     def __init__(self, name):
