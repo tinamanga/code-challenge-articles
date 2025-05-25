@@ -58,6 +58,11 @@ class Author:
 class Magazine:
     all =[] #This tracks all the magazine instances
     def __init__(self, name, category):
+        if not isinstance(name, str) or not (2 <= len(name) <= 16):
+            raise Exception("Name must be a string of 2 to 16 characters")
+        if not isinstance(category, str) or len(category.strip()) == 0:
+            raise Exception("Category must be a non-empty string")
+
         self.name = name
         self.category = category
         Magazine.all.append(self)
@@ -65,15 +70,29 @@ class Magazine:
     @property
     def name(self):
         return self._name
+    
+    @category.setter
+    def category(self, value):
+        if isinstance(value, str) and len(value.strip()) > 0:
+            self._category = value
+        else:
+            raise Exception("Category must be a non-empty string")
+
 
     def articles(self):
-        pass
+        return [article for article in Article.all if article.magazine == self]
+
 
     def contributors(self):
-        pass
+        return list({article.author for article in self.articles()})
+
 
     def article_titles(self):
-        pass
+        titles = [article.title for article in self.articles()]
+        return titles if titles else None
 
     def contributing_authors(self):
-        pass
+        from collections import Counter
+        author_count = Counter([article.author for article in self.articles()])
+        authors = [author for author, count in author_count.items() if count > 2]
+        return authors if authors else None
