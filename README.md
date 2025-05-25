@@ -63,7 +63,7 @@ build out any helper methods if needed.
 - `Author __init__(self, name)`
   - Author is initialized with a name
 - `Author property name`
-  - Returns the author's name
+  - Returns the author's namepipenv shell
   - Names must be of type `str`
   - Names must be longer than 0 characters
   - Should **not be able** to change after the author is instantiated.
