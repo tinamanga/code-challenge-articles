@@ -6,8 +6,16 @@ class Article:
         
 class Author:
     def __init__(self, name):
+        if not isinstance(name,str):
+            raise Exception("Name must be a string")
+        if len(name.strip()) == 0:
+            raise Exception("Name must be longer that 0 characters")
         self.name = name
 
+        @property
+        def name(self):
+            return self._name
+        
 
     def articles(self):
         pass
