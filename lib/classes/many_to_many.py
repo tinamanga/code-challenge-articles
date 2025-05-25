@@ -18,16 +18,20 @@ class Author:
         
 
     def articles(self):
-        pass
+         return [article for article in Article.all if article.author == self]
+
 
     def magazines(self):
-        pass
+       return list({article.magazine for article in self.articles()})
+
 
     def add_article(self, magazine, title):
-        pass
+        return Article(self, magazine, title)
 
     def topic_areas(self):
-        pass
+        if not self.articles():
+            return None
+        return list({article.magazine.category for article in self.articles()})
 
 class Magazine:
     def __init__(self, name, category):
